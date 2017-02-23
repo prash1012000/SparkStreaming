@@ -3,14 +3,15 @@ package com.barclays.streaming.processor;
 import java.util.Map;
 
 import com.barclays.streaming.source.Consumer;
-import com.barclays.streaming.source.ConsumerConfig;
+import com.barclays.streaming.source.StreamConsumerConfig;
 
 public interface StreamProcessor {
-	Consumer getInputConsumer(Object object);
 	
-//	Producer getOutputProducer();
+	Consumer getInputConsumer(StreamConsumerConfig config);
 
-	void process(String appname, Map params);
+	void process(String appname, Map sparkParams);
+	
+	//void setProcessor(IProcessor process);
 	
 	
 }

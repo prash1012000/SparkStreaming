@@ -17,18 +17,18 @@ public class StreamingDriver {
 		System.out.println("Inside Main");
 		String topics="streaming";
 		KafkaSparkStreamProcessor streamProcess=new KafkaSparkStreamProcessor();
-		KafkaSparkConsumerConfig<String, String, StringDecoder, StringDecoder> config=new KafkaSparkConsumerConfig<String, String, StringDecoder, StringDecoder>();
+		KafkaSparkConsumerConfig<String, String, StringDecoder, StringDecoder,String> config=new KafkaSparkConsumerConfig<String, String, StringDecoder, StringDecoder,String>();
 		config.setKeyClass(String.class);
 		config.setValueClass(String.class);
 		config.setKeyDecoderClass(StringDecoder.class);
 		config.setValueDecoderClass(StringDecoder.class);
-		Map<String, String> kafkaParams = new HashMap<>();
-	    kafkaParams.put("metadata.broker.list", "localhost:9092");
-	    config.setParams(kafkaParams);
-	    Set<String> topicsSet = new HashSet<>(Arrays.asList(topics.split(",")));
+		config.setBrokers("localhost:9092");
+		Set<String> topicsSet = new HashSet<>(Arrays.asList(topics.split(",")));
 	    config.setTopics(topicsSet);
 	    Map<String,Object> sparkParams=new HashMap<>();
 	    sparkParams.put("sparkConfig",config);
+	    sparkParams.put("master","local[2]");
+	    sparkParams.put("BatchDuration","60");
 	    streamProcess.process("test",sparkParams);
 	}
 

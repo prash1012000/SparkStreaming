@@ -18,11 +18,10 @@ public abstract class SparkProcessor<K,V> implements StreamProcessor {
 
 	protected JavaStreamingContext getSparkStreamingContext(String appname, Map sparkParams) {
 		SparkConf sparkConf = new SparkConf().setAppName(appname);
-		sparkConf.setMaster("local[2]");
+		sparkConf.setMaster((String)sparkParams.get("master"));
 		JavaSparkContext sc = new JavaSparkContext(sparkConf);
-		//long batchDuration=(long) sparkParams.get("BatchDuration");
-		long batchDuration=100;
-	    JavaStreamingContext jssc = new JavaStreamingContext(sc, Durations.seconds(batchDuration));
+		long batchDuration=Long.parseLong((String)sparkParams.get("BatchDuration"));
+		JavaStreamingContext jssc = new JavaStreamingContext(sc, Durations.seconds(batchDuration));
 	    return jssc;	
 	}
 
@@ -34,14 +33,13 @@ public abstract class SparkProcessor<K,V> implements StreamProcessor {
 		jssc.awaitTermination();
 	}
 	
-	public void process(String appname, Map params) {
-		JavaStreamingContext jssc = getSparkStreamingContext(appname, params);
-		Consumer consumer =  getInputConsumer(params.get("sparkConfig"));
-		processSourceStream(consumer,jssc);
+	public void process(String appname, Map sparkParams) {
+		JavaStreamingContext jssc = getSparkStreamingContext(appname, sparkParams);
+		processSourceStream(sparkParams,jssc);
 		start(jssc);
 		waitForTermination(jssc);
 	}
 
-	protected abstract void processSourceStream(Consumer consumer,JavaStreamingContext jssc);
+	protected abstract void processSourceStream(Map params,JavaStreamingContext jssc);
 	
 }
