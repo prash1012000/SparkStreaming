@@ -1,5 +1,6 @@
 package com.barclays.streaming.source.kafka;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import com.barclays.streaming.source.StreamConsumerConfig;
@@ -232,5 +233,15 @@ public class KafkaSparkConsumerConfig<K, V, KD extends Decoder<K>, VD extends De
 		addPropertyIfNotNull(ConsumerConfig.GROUP_ID_CONFIG,getGroupId());		
 		addPropertyIfNotNull(ConsumerConfig.HEARTBEAT_FREQUENCY,getHeartbeatIntervalMs());
 		addPropertyIfNotNull(ConsumerConfig.RECONNECT_BACKOFF_MS_CONFIG, getReconnectBackoffMs());
+	}
+	
+	public String getFirstTopic() {
+		Iterator<String> itr = topics.iterator();
+		String topic = null;
+		while (itr.hasNext()) {
+			topic = itr.next();
+			break;
+		}
+		return topic;
 	}
 }

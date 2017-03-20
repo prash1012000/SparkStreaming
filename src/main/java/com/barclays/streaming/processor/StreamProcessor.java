@@ -1,17 +1,12 @@
 package com.barclays.streaming.processor;
 
-import java.util.Map;
+import java.io.Serializable;
 
-import com.barclays.streaming.source.Consumer;
-import com.barclays.streaming.source.StreamConsumerConfig;
-
-public interface StreamProcessor {
+public interface StreamProcessor<I,O> extends Serializable {
 	
-	Consumer getInputConsumer(StreamConsumerConfig config);
+	//Consumer getInputConsumer(StreamConsumerConfig config);
 
-	void process(String appname, Map sparkParams);
-	
-	//void setProcessor(IProcessor process);
+	O process(I input);
 	
 	
 }
