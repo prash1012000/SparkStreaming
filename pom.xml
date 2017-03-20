@@ -71,5 +71,10 @@
     			 <artifactId>elasticsearch-spark_2.10</artifactId>
     			 <version>2.3.4</version>
 			</dependency>
+			<dependency>
+   				 <groupId>org.apache.spark</groupId>
+    			  <artifactId>spark-sql_2.11</artifactId>
+   				 <version>1.6.3</version>
+			</dependency>
 		</dependencies>
 </project>
